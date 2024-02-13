@@ -25,7 +25,7 @@ public final class ClientQuery {
     
     /// This function is used to initalise Graph.Client object for queries and mutation of BUY sdk
     /// - Parameter configuration: This tuple accept first parameter for apikey and second for shopDomain
-    static func configureWith(_ configuration: (apiKey: String, shopDomain: String)) {
+    static public func configureWith(_ configuration: (apiKey: String, shopDomain: String)) {
         configDetails = configuration
     }
     
