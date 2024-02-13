@@ -7,7 +7,7 @@
 
 import Buy
 
-public class Queries {
+public struct Queries {
     
     private init() {}
     
@@ -15,6 +15,7 @@ public class Queries {
         return Storefront.buildQuery { $0
             .shop { $0
                 .name()
+                .id()
             }
         }
     }

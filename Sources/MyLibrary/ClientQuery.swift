@@ -7,28 +7,36 @@
 
 import Foundation
 import Buy
+import OSLog
 
-public class ClientQuery {
+public final class ClientQuery {
     
-   private static let client = Graph.Client(shopDomain: "shoes.myshopify.com", apiKey:"dGhpcyBpcyBhIHByaXZhdGUgYXBpIGtleQ", locale:Locale.current)
-        
-    public static func getShopDetails() {
+    private var client              : Graph.Client!
+    static let manager              = ClientQuery()
+    private static var configDetails: (apiKey: String, shopDomain: String)?
+    fileprivate var logger  = Logger(subsystem: "com.nxl.app", category: "ClientQuery")
+    
+    
+    private init() {
+        guard let _ = ClientQuery.configDetails else { fatalError("ApiKey and shop domain not provided before accessing ClientQuery functions") }
+        client      = .init(shopDomain: ClientQuery.configDetails!.shopDomain, apiKey: ClientQuery.configDetails!.apiKey)
+    }
+    
+    
+    /// This function is used to initalise Graph.Client object for queries and mutation of BUY sdk
+    /// - Parameter configuration: This tuple accept first parameter for apikey and second for shopDomain
+    static func configureWith(_ configuration: (apiKey: String, shopDomain: String)) {
+        configDetails = configuration
+    }
+    
+    
+    func queryForShopName() {
         let query = Queries.shopQuery()
-        
-        client.queryGraphWith(query) { query, error in
-            
+        client.queryGraphWith(query) { response, error in
+            let name = response?.shop.name ?? ""
+            self.logger.debug("\(name)")
         }.resume()
     }
-    
-    public static func getCollections(withLimit limit: Int) {
-        let query = Queries.queryForCollections(withLimit: 20)
-        
-        client.queryGraphWith(query) { query, error in
-//            let response = query?.collections.edges ?? []
-//            let collections = response.map({ Collection(modelType: $0.node) })
-        }.resume()
-    }
-    
     
 }
 
