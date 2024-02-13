@@ -30,7 +30,7 @@ public final class ClientQuery {
     }
     
     
-    func queryForShopName() {
+    public func queryForShopName() {
         let query = Queries.shopQuery()
         client.queryGraphWith(query) { response, error in
             let name = response?.shop.name ?? ""
