@@ -12,7 +12,7 @@ import OSLog
 public final class ClientQuery {
     
     private var client              : Graph.Client!
-    static let manager              = ClientQuery()
+    public static let manager              = ClientQuery()
     private static var configDetails: (apiKey: String, shopDomain: String)?
     fileprivate var logger  = Logger(subsystem: "com.nxl.app", category: "ClientQuery")
     
