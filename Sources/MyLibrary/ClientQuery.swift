@@ -38,6 +38,17 @@ public final class ClientQuery {
         }.resume()
     }
     
+    public func getCollections(withLimit limit: Int32) async -> [Collection] {
+        let query = Queries.queryForCollections(withLimit: limit)
+        return await withCheckedContinuation { continuation in
+            client.queryGraphWith(query) { response, error in
+                let collections = response?.collections.edges.map { Collection(modelType: $0.node) }
+                self.logger.debug("Collection \(collections?.count ?? 0, align: .right(columns: 10))")
+                continuation.resume(returning: collections ?? [])
+            }.resume()
+        }
+    }
+    
 }
 
 public struct Collection {
